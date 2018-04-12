@@ -1,5 +1,13 @@
 {% extends "bootstrap/base.html" %}
+<head>
 
+        {{ moment.include_jquery() }}
+        {{ moment.include_moment() }}
+
+        <!--使用中文,默认是英语的-->
+　　   {{ moment.lang("zh-CN") }} 
+　　　　 
+</head>
 {% block title %}Flasky{% endblock %}
 
 {% block navbar %}
@@ -40,4 +48,10 @@
 
     {% block page_content %}{% endblock %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{{ moment.lang('zh-CN') }}
 {% endblock %}
