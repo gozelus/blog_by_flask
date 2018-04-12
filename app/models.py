@@ -66,7 +66,12 @@ class User(UserMixin, db.Model):
         self.password_hash = generate_password_hash(password)
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+    def can(self, permissions):
+        return self.role is not None and (self.role.permissions | permissions) == permissions
+    
+    def is_administrator(self):
+        return self.can(Permission.ADMINISTER)
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
