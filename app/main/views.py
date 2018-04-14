@@ -1,7 +1,7 @@
 from flask import render_template, abort, render_template, flash, url_for, redirect
 from . import main
-from ..models import User
-from .forms import EditProfileForm, AdminEditProfileForm
+from ..models import User, Role
+from .forms import EditProfileForm, EditProfileAdminForm
 from flask_login import current_user, login_required
 from ..decorators import admin_required
 from .. import db
@@ -40,7 +40,7 @@ def edit_profile():
 @admin_required
 def edit_profile_admin(user_id):
     user = User.query.get_or_404(user_id)
-    form = AdminEditProfileForm(user)
+    form = EditProfileAdminForm(user)
     if form.validate_on_submit():
         user.email = form.email.data
         user.username = form.username.data
