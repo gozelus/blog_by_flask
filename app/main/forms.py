@@ -3,6 +3,8 @@ from wtforms import StringField, TextAreaField, SubmitField, BooleanField, Selec
 from wtforms.validators import Length, Regexp, DataRequired, Email
 from wtforms import ValidationError
 from ..models import Role, User
+from flask_pagedown.fields import PageDownField
+
 class EditProfileForm(FlaskForm):
     name = StringField('Real name', validators=[DataRequired(), Length(0, 64)]) 
     location = StringField('Location', validators=[DataRequired(), Length(0, 64)]) 
@@ -44,5 +46,5 @@ class EditProfileAdminForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    body = TextAreaField('你想写点什么...', validators=[DataRequired()])
+    body = PageDownField('你想写点什么...', validators=[DataRequired()])
     submit = SubmitField('保存')

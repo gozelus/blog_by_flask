@@ -9,8 +9,12 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 moment = Moment()
 from .models import User, Role
+from flask_pagedown import PageDown
+
 
 bootstrap = Bootstrap()
+pagedown = PageDown()
+
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
@@ -18,6 +22,7 @@ def create_app(config_name):
     db.init_app(app)
     moment.init_app(app)
     login_manager.init_app(app)
+    pagedown.init_app(app)
     db.create_all(app=app)
 
     from .auth import auth as auth_blueprint
