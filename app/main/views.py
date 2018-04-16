@@ -1,4 +1,4 @@
-from flask import render_template, abort, render_template, flash, url_for, redirect
+from flask import render_template, abort, render_template, flash, url_for, redirect, request
 from . import main
 from ..models import User, Role, Permission, Post
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm
@@ -9,14 +9,16 @@ from .. import db
 @main.route('/', methods=['GET', 'POST'])
 def index():
     form = PostForm()
+    page = request.args.get('page', 1, type=int)
     if current_user.can(Permission.WRITE_ARTICLES) and \
                 form.validate_on_submit():
         post = Post(body=form.body.data, author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('.index'))
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('index.html', form=form, posts=posts)
+    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page, error_out=False)
+    posts = pagination.items
+    return render_template('index.html', form=form, posts=posts, pagination=pagination)
 
 
 @main.route('/user/<username>')
