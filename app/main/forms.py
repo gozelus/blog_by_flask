@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, BooleanField, SelectField
+from wtforms import StringField, TextAreaField, SubmitField, BooleanField, SelectField, FileField
 from wtforms.validators import Length, Regexp, DataRequired, Email
 from wtforms import ValidationError
 from ..models import Role, User
@@ -23,6 +23,7 @@ class EditProfileAdminForm(FlaskForm):
     name = StringField('Real name', validators=[Length(0, 64)])
     location = StringField('Location', validators=[Length(0, 64)])
     about_me = TextAreaField('About me')
+    avatar = FileField('头像')
     submit = SubmitField('Submit')
 
     def __init__(self, user, *args, **kwargs):
@@ -40,3 +41,8 @@ class EditProfileAdminForm(FlaskForm):
         if field.data != self.user.username and \
                 User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
+
+
+class PostForm(FlaskForm):
+    body = TextAreaField('你想写点什么...', validators=[DataRequired()])
+    submit = SubmitField('保存')

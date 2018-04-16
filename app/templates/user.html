@@ -20,4 +20,5 @@
     <p>Member since {{ moment(user.member_since).format('L') }}. 
         Last seen {{ moment(user.last_seen).fromNow(refresh=True) }}.</p>
 </div>
+<h3>{{ user.username }} 发表的文章 </h3> {% include '_posts.html' %}
 {% endblock %}
